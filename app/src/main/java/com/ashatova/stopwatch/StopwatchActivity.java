@@ -35,7 +35,7 @@ public class StopwatchActivity extends Activity {
         savedInstanceState.putBoolean("running", running);
         savedInstanceState.putBoolean("wasRunning", wasRunning);
     }
-
+    /*
     @Override
     public void onStart(){
         Log.d(TAG, "=== onStart called ===");
@@ -43,7 +43,7 @@ public class StopwatchActivity extends Activity {
         if (wasRunning){
             running = true;
         }
-    }
+    }*/
 
     // Запустить секундомер при щелчке на кнопке Start
     public void onClickStart(View view){
@@ -80,13 +80,30 @@ public class StopwatchActivity extends Activity {
             }
         });
     }
+    @Override
+    public void onPause(){
+        Log.d(TAG, "=== onPause called ===");
+        super.onPause();
+        wasRunning = running;
+        running = false;
+    }
 
+    @Override
+    public void onResume(){
+        Log.d(TAG, "=== onResume called ===");
+        super.onResume();
+        if (wasRunning){
+            running = true;
+        }
+    }
+
+    /*
     @Override
     public void onStop(){
         Log.d(TAG, "=== onStop called ===");
         super.onStop();
         wasRunning = running;
         running = false;
-    }
+    }*/
 
 }
