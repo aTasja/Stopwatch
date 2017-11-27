@@ -11,40 +11,53 @@ public class StopwatchActivity extends Activity {
 
     private int seconds = 0;
     private boolean running;
-    //private final static String LOG_TAG = "StopwatchActivity";
+    private boolean wasRunning;
+    private final String TAG = getClass().getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("===onCreate===", "===timer is onCreate===");
+        Log.d(TAG, "=== onCreate called ===");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stopwatch);
         if (savedInstanceState != null){
-            Log.d("===Restart===", "===savedInastanceState is restart===");
+            Log.d(TAG, "=== savedInstanceState is restart ===");
             seconds = savedInstanceState.getInt("seconds");
             running = savedInstanceState.getBoolean("running");
+            wasRunning = savedInstanceState.getBoolean("wasRunning");
         }
         runTimer();
     }
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState){
+        Log.d(TAG, "=== onSaveInstanceState called ===");
         savedInstanceState.putInt("seconds", seconds);
         savedInstanceState.putBoolean("running", running);
+        savedInstanceState.putBoolean("wasRunning", wasRunning);
+    }
+
+    @Override
+    public void onStart(){
+        Log.d(TAG, "=== onStart called ===");
+        super.onStart();
+        if (wasRunning){
+            running = true;
+        }
     }
 
     // Запустить секундомер при щелчке на кнопке Start
     public void onClickStart(View view){
-        Log.d("===Start===", "===button START pressed===");
+        Log.d(TAG, "=== button START pressed ===");
         running = true;
     }
     // Остановить секундомер при щелчке на кнопке Stop
     public void onClickStop(View view){
-        Log.d("===Stop===", "===button STOP pressed===");
+        Log.d(TAG, "=== button STOP pressed ===");
         running = false;
     }
     //Обнулить секундомер при щелачке на кнопке Reset
     public void onClickReset(View view){
-        Log.d("===Reset===", "===button RESET pressed===");
+        Log.d(TAG, "=== button RESET pressed ===");
         running = false;
         seconds = 0;
     }
@@ -68,5 +81,12 @@ public class StopwatchActivity extends Activity {
         });
     }
 
+    @Override
+    public void onStop(){
+        Log.d(TAG, "=== onStop called ===");
+        super.onStop();
+        wasRunning = running;
+        running = false;
+    }
 
 }
